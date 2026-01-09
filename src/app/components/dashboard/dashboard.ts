@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { DatasetService } from '../../services/dataset';
 import { DashboardDto } from '../../models/dashboard.dto';
 
@@ -10,7 +10,7 @@ import { DashboardDto } from '../../models/dashboard.dto';
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
-export class Dashboard implements OnInit {
+export class Dashboard implements OnInit, AfterViewInit {
 
   totals: DashboardDto;
 
@@ -19,6 +19,14 @@ export class Dashboard implements OnInit {
   }
 
   ngOnInit(): void {    
+    this.loadData();
+  }
+
+  ngAfterViewInit() {
+    this.loadData();
+  }
+
+  async loadData() {
     this.service.listContacts().then(
       (data: any) => this.totals.contacts = data.length
     );

@@ -13,9 +13,9 @@ export class DatasetService {
   isDbConnected: boolean = true;
 
   constructor() {
-    this.statusMessage = 'Pronto';
+    this.statusMessage = 'Ready';
   }
-  
+
   setStatusMessage(message: string) {
     this.statusMessage = message;
   }

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,6 +16,7 @@ import { AsyncPipe, DatePipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,               
     FormsModule,
+    ReactiveFormsModule,
     DatePipe    
   ],
   templateUrl: './contacts.html',
@@ -32,7 +33,17 @@ export class Contacts implements AfterViewInit, OnInit {
 
   gridColumns: string[] = ['id', 'name', 'instant', 'data', 'actions'];
 
-  constructor(private readonly service: DatasetService) {}
+  contactForm: FormGroup;
+
+  constructor(private readonly service: DatasetService) {
+
+    this.contactForm = new FormGroup(
+      { 
+        name: new FormControl(''), 
+        data: new FormControl('') 
+      }
+    );
+  }
 
   async ngOnInit() {
     await this.loadContacts();
@@ -51,9 +62,13 @@ export class Contacts implements AfterViewInit, OnInit {
     );    
   }
 
-  async add() {
+  async add() {    
     var name = this.inputName.nativeElement.value;
     var data = this.inputData.nativeElement.value;
+
+    //for new version
+    //name = this.contactForm?.controls["name"].value;
+    //data = this.contactForm?.controls["data"].value;
 
     const dto = new ContactDto();
     dto.name = name;

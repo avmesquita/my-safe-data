@@ -1,30 +1,41 @@
 @if (userConnected) {
-  <mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChanged($event)">
+  <mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChanged($event)" 
+                                           (selectedIndexChange)="onTabIndexChange($event)">
 
     <mat-tab label="Dashboard">
-      <app-dashboard></app-dashboard>
+      <ng-template matTabContent>
+        <app-dashboard></app-dashboard>
+      </ng-template>      
     </mat-tab>
 
     <mat-tab label="Contacts">
-      <app-contacts></app-contacts>
+      <ng-template matTabContent>
+        <app-contacts></app-contacts>
+      </ng-template>      
     </mat-tab>
 
     <mat-tab label="Bookmark">
-      <app-links></app-links>
+      <ng-template matTabContent>
+        <app-links></app-links>
+      </ng-template>      
     </mat-tab>
 
     <mat-tab label="Notes">
-      <app-notes></app-notes>
+      <ng-template matTabContent>
+        <app-notes></app-notes>
+      </ng-template>      
     </mat-tab>
 
     <mat-tab label="Passwords">
-      <app-passwords></app-passwords>
+      <ng-template matTabContent>
+        <app-passwords></app-passwords>
+      </ng-template>      
     </mat-tab>
 
     <mat-tab label="About">
       <div style="padding: 20px;">
         <h3>My Safe Data v1.0</h3>
-        <p>Desktop application built with Angular, Electron e SQLite.</p>
+        <p>Desktop application built with Angular, Electron e SQLite.</p>        
       </div>
     </mat-tab>
 
@@ -34,7 +45,7 @@
   <app-login (onAuthenticate)="onAuthenticate($event)"></app-login>
 }
 @else {
-  <app-register></app-register>
+  <app-register (onRegister)="onRegister($event)"></app-register>
 }
 
 <footer class="status-bar">

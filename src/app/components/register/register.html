@@ -12,15 +12,15 @@
       <form class="register-form">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="newUsername" name="username" required>
+          <input matInput [(ngModel)]="newUsername" name="username" required (keyup.enter)="edtPassword.focus()">
           <mat-icon matSuffix>alternate_email</mat-icon>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" 
+          <input matInput #edtPassword [type]="hidePassword ? 'password' : 'text'" 
                  [(ngModel)]="newPassword" name="password" 
-                 (input)="checkPasswordStrength()" required>
+                 (input)="checkPasswordStrength()" required (keyup.enter)="edtConfirmPassword.focus()">
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
             <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>
@@ -29,19 +29,19 @@
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Confirm Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" 
-                 [(ngModel)]="newConfirmPassword" name="confirmPassword" required>
+          <input matInput #edtConfirmPassword [type]="hidePassword ? 'password' : 'text'" 
+                 [(ngModel)]="newConfirmPassword" name="confirmPassword" required (keyup.enter)="btnRegister.focus()">
                  @if(newPassword !== newConfirmPassword) {
                     <mat-error>
                         Passwords do not match
-                    </mat-error>                    
+                    </mat-error>
                  }
         </mat-form-field>
       </form>
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button mat-raised-button color="accent" 
+      <button #btnRegister mat-raised-button color="accent" 
               [disabled]="!isFormValid()" 
               (click)="register()">
         Register Now

@@ -5,7 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Contacts } from "./components/contacts/contacts";
 import { DatasetService } from './services/dataset';
 import { Links } from "./components/links/links";
@@ -24,6 +24,7 @@ import { Register } from "./components/register/register";
     MatIconModule,
     MatTabsModule,
     FormsModule,
+    ReactiveFormsModule,
     Contacts,
     Links,
     Notes,
@@ -35,7 +36,7 @@ import { Register } from "./components/register/register";
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {    
+export class App implements OnInit {
   userExists: boolean = false;
   userConnected: boolean = false;
 
@@ -77,11 +78,20 @@ export class App implements OnInit {
   }
 
   async onTabChanged(event: MatTabChangeEvent) {
-    //alert('Tab Index:' + event.index +  '|' + 'Tab Title:' + event.tab.textLabel);
+    //console.log('Tab Index:' + event.index +  '|' + 'Tab Title:' + event.tab.textLabel);
   }  
+
+  async onTabIndexChange(event: any) {
+    //console.log('Event:' + event);
+  }
 
   onAuthenticate(value: boolean) {
     this.userConnected = value;
   }
+
+  onRegister(value: boolean) {
+    this.userExists = value;
+  }
+
 
 }

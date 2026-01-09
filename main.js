@@ -247,7 +247,7 @@ function createWindow() {
         {
             label: 'My Safe Data',
             submenu: [
-                { label: 'Sair', role: 'quit' }
+                { label: 'Quit', role: 'quit' }
             ]
         }
     ];

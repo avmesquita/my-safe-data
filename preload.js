@@ -21,6 +21,6 @@ contextBridge.exposeInMainWorld('dbAPI', {
 
   addPassword: (dto) => ipcRenderer.invoke('add-password', dto),
   listPasswords: () => ipcRenderer.invoke('get-passwords'),
-  deleteContacts: (id) => ipcRenderer.invoke('delete-password', id),
+  deletePassword: (id) => ipcRenderer.invoke('delete-password', id),
 
 });
