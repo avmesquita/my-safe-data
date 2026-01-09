@@ -1,0 +1,54 @@
+@if (userConnected) {
+  <mat-tab-group animationDuration="500ms" (selectedTabChange)="onTabChanged($event)" 
+                                           (selectedIndexChange)="onTabIndexChange($event)">
+
+    <mat-tab label="Dashboard">
+      <ng-template matTabContent>
+        <app-dashboard></app-dashboard>
+      </ng-template>      
+    </mat-tab>
+
+    <mat-tab label="Contacts">
+      <ng-template matTabContent>
+        <app-contacts></app-contacts>
+      </ng-template>      
+    </mat-tab>
+
+    <mat-tab label="Bookmark">
+      <ng-template matTabContent>
+        <app-links></app-links>
+      </ng-template>      
+    </mat-tab>
+
+    <mat-tab label="Notes">
+      <ng-template matTabContent>
+        <app-notes></app-notes>
+      </ng-template>      
+    </mat-tab>
+
+    <mat-tab label="Passwords">
+      <ng-template matTabContent>
+        <app-passwords></app-passwords>
+      </ng-template>      
+    </mat-tab>
+
+    <mat-tab label="About">
+      <div style="padding: 20px;">
+        <h3>My Safe Data v1.0</h3>
+        <p>Desktop application built with Angular, Electron e SQLite.</p>        
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+}
+@else if (userExists) {
+  <app-login (onAuthenticate)="onAuthenticate($event)"></app-login>
+}
+@else {
+  <app-register (onRegister)="onRegister($event)"></app-register>
+}
+
+<footer class="status-bar">
+  <span>{{ getStatusMessage() }}</span>
+  <span class="status-dot" [class.online]="getDatabaseStatus()"></span>
+</footer>

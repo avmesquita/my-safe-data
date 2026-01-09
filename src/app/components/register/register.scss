@@ -1,0 +1,39 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #eceff1; /* Slightly different gray to distinguish from Login */
+}
+
+.register-card {
+  width: 450px;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+}
+
+.register-header-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fce4ec;
+  border-radius: 50%;
+}
+
+.register-form {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+mat-card-title {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #c2185b; /* Accent color for registration */
+}
