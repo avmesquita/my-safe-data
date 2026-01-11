@@ -1,7 +1,19 @@
 {
-  "name": "safe-data",
-  "version": "0.0.0",
+  "name": "my-safe-data",
+  "productName": "My Safe Data",
+  "version": "1.0.1",
   "main": "main.js",
+  "license": "LGPL-3.0-or-later",
+  "description": "Local Secure Storage",
+  "readme": "README.md",
+  "author": {
+    "name": "Andre Mesquita",
+    "email": "avmesquita@gmail.com",
+    "url": "https://avmsistemas.net"
+  },
+  "categories": [
+    "Other"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -9,7 +21,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "electron": "ng build --base-href ./ && electron .",
-    "build-exe": "ng build --base-href ./ && electron-builder"
+    "build-exe": "ng build --base-href ./ && electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "prettier": {
     "printWidth": 100,
@@ -33,7 +46,10 @@
     "@angular/material": "^20.2.14",
     "@angular/platform-browser": "^20.3.0",
     "@angular/router": "^20.3.0",
+    "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.5.0",
+    "electron-log": "^5.4.3",
+    "electron-updater": "^6.7.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
@@ -42,6 +58,8 @@
     "@angular/build": "^20.3.3",
     "@angular/cli": "^20.3.3",
     "@angular/compiler-cli": "^20.3.0",
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/jasmine": "~5.1.0",
     "electron": "^39.2.7",
     "electron-builder": "^26.0.12",
@@ -55,20 +73,80 @@
     "typescript": "~5.9.2"
   },
   "build": {
-    "appId": "com.safedata.app",
+    "appId": "com.mysafedata.app",
+    "productName": "My Safe Data",
     "directories": {
-      "output": "dist-electron" 
+      "output": "dist-electron"
     },
     "files": [
-      "dist/safe-data/browser/**/*", 
+      "dist/safe-data/browser/**/*",
       "main.js",
       "preload.js",
-      "node_modules/better-sqlite3/**/*"
+      "node_modules/better-sqlite3/**/*",
+      "src/favicon.ico",
+      "src/favicon.png"
     ],
     "win": {
-      "target": "portable",
       "asarUnpack": "**/*.node",
-      "verifyUpdateCodeSignature": false
-    }
-  }
+      "verifyUpdateCodeSignature": false,
+      "icon": "favicon.ico",
+      "target": [
+        "nsis",
+        "zip",
+        "portable"
+      ]
+    },
+    "mac": {
+      "icon": "favicon.icns"
+    },
+    "linux": {
+      "icon": "favicon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "avmesquita",
+      "repo": "my-safe-data"
+    }    
+  },
+  "files": [
+    "dist/safe-data/browser/**/*",
+    "main.js",
+    "preload.js",
+    "node_modules/better-sqlite3/**/*",
+    "src/favicon.ico",
+    "src/favicon.png"
+  ],
+  "win": {
+    "asarUnpack": "**/*.node",
+    "verifyUpdateCodeSignature": false,
+    "icon": "favicon.ico",
+    "target": [
+      "nsis",
+      "zip",
+      "portable"
+    ]
+  },
+  "mac": {
+    "icon": "favicon.icns"
+  },
+  "linux": {
+    "icon": "favicon.png",
+    "category": "Utility"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "avmesquita",
+    "repo": "my-safe-data"
+  }   
 }

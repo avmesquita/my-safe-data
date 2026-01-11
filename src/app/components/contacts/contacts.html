@@ -1,20 +1,18 @@
 <div style="padding: 20px; padding-bottom: 50px;">
       <h2>Contact Manager</h2>      
-      <div style="margin-bottom: 20px; display: flex; gap: 10px;">
-        <form [formGroup]="contactForm">
+      <div style="margin-bottom: 20px; display: flex; gap: 10px;">        
           <mat-form-field appearance="outline" style="flex: 1;">
             <mat-label>Name</mat-label>
-            <input matInput #inputName [(ngModel)]="newName" formControlName="name" placeholder="Ex: John Doe">
+            <input matInput #inputName [(ngModel)]="newName"  placeholder="Ex: John Doe">
           </mat-form-field>
           <mat-form-field appearance="outline" style="flex: 1;">
             <mat-label>Data</mat-label>
-            <input matInput #inputData [(ngModel)]="newData" formControlName="data" placeholder="Ex: +351 910 233 705">
+            <input matInput #inputData [(ngModel)]="newData"  placeholder="Ex: +351 910 233 705">
           </mat-form-field>
 
           <button mat-raised-button color="primary" (click)="add()">
             <mat-icon>add</mat-icon> Add
-          </button>
-        </form>
+          </button>        
       </div>
 
       <table mat-table [dataSource]="contacts" class="mat-elevation-z8">

@@ -18,6 +18,8 @@ function sendDatabaseStatus(status) {
 
 function createWindow() {
     
+    app.setAppUserModelId('My Safe Data');
+
     const appPath = app.getPath('userData');
     const dbPath = path.join(appPath, 'safe-data.db');
     const db = new Database(dbPath, { fileMustExist: false });
@@ -33,6 +35,22 @@ function createWindow() {
         enviarStatus(error.message ?? error);
         sendDatabaseStatus(false);
     }
+
+    /*
+        AUTHENTICATE    
+    */
+
+    ipcMain.handle('authenticate', (event, dto) => {
+        try {
+            const data = db.prepare("SELECT * FROM users where name = ? and data = ?").all(dto.name, dto.data);
+            sendStatus('Authenticated.');
+            sendDatabaseStatus(true);
+            return data;
+        } catch (error) {
+            sendDatabaseStatus(false);
+            sendStatus('Ops: ' + error.message);
+        }  
+    });
 
     /* 
         USER
@@ -52,8 +70,12 @@ function createWindow() {
     
     ipcMain.handle('get-user', () => {
         try {
-            const data = db.prepare('SELECT * FROM users limit 1').all();
-            //sendStatus('User loaded.');
+            const data = db.prepare('SELECT * FROM users limit 1').all();            
+            if (data?.length > 0) {
+                sendStatus('There is a registered user.');
+            } else {
+                sendStatus('You need register first.');
+            }
             sendDatabaseStatus(true);
             return data;
         } catch (error) {
@@ -80,8 +102,7 @@ function createWindow() {
     
     ipcMain.handle('get-contacts', () => {
         try {
-            const data = db.prepare('SELECT * FROM contacts').all();
-            //sendStatus('Contacts loaded.');
+            const data = db.prepare('SELECT * FROM contacts').all();            
             sendDatabaseStatus(true);
             return data;
         } catch (error) {
@@ -110,7 +131,7 @@ function createWindow() {
     ipcMain.handle('add-bookmark', (event, dto) => {
         try {
             const info = db.prepare('INSERT INTO links (name, data) VALUES (?, ?)').run(dto.name, dto.data);
-            sendStatus('Link saved');
+            sendStatus('Bookmark saved');
             sendDatabaseStatus(true);
             return info.lastInsertRowid;        
         } catch (error) {
@@ -121,8 +142,7 @@ function createWindow() {
     
     ipcMain.handle('get-bookmarks', () => {
         try {
-            const data = db.prepare('SELECT * FROM links').all();
-            //sendStatus('Bookmarks loaded.');
+            const data = db.prepare('SELECT * FROM links').all();            
             sendDatabaseStatus(true);
             return data;
         } catch (error) {
@@ -134,7 +154,7 @@ function createWindow() {
     ipcMain.handle('delete-bookmark', (event, id) => {
         try {
             db.prepare('DELETE FROM links WHERE id = ?').run(id);
-            sendStatus('Link deleted.');
+            sendStatus('Bookmark deleted.');
             sendDatabaseStatus(true);
             return true;
         } catch (error) {
@@ -162,8 +182,7 @@ function createWindow() {
     
     ipcMain.handle('get-notes', () => {
         try {
-            const data = db.prepare('SELECT * FROM notes').all();
-            //sendStatus('Notes loaded.');
+            const data = db.prepare('SELECT * FROM notes').all();            
             sendDatabaseStatus(false);
             return data;
         } catch (error) {
@@ -202,8 +221,7 @@ function createWindow() {
     
     ipcMain.handle('get-passwords', () => {
         try {
-            const data = db.prepare('SELECT * FROM passwords').all();
-            //sendStatus('Passwords loaded.');
+            const data = db.prepare('SELECT * FROM passwords').all();            
             sendDatabaseStatus(true);
             return data;
         } catch (error) {
@@ -225,9 +243,13 @@ function createWindow() {
         }
     });
 
+    const iconPath = path.join(__dirname, 'favicon.ico');
+    console.log("Procurando icone em:", iconPath);
+
     win = new BrowserWindow({
         width: 800,
         height: 600,
+        icon: path.join(__dirname, 'src/favicon.ico'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -235,6 +257,13 @@ function createWindow() {
         }
     });
 
+    if (process.platform === 'linux') {
+        win.setIcon(path.join(__dirname, 'src/favicon.png'));
+    }    
+
+    /*
+    TO DEBUG
+    */
     //win.webContents.openDevTools();
     
     win.loadFile(path.join(__dirname, `dist/safe-data/browser/index.html`));
@@ -245,7 +274,7 @@ function createWindow() {
 
     const template = [
         {
-            label: 'My Safe Data',
+            label: 'Options',
             submenu: [
                 { label: 'Quit', role: 'quit' }
             ]
