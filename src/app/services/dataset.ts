@@ -4,13 +4,14 @@ import { LinkDto } from '../models/link.dto';
 import { NoteDto } from '../models/note.dto';
 import { PasswordDto } from '../models/password.dto';
 import { UserDto } from '../models/user.dto';
+import { AuthDto } from '../models/auth.dto';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatasetService {
   private statusMessage: string = '';
-  isDbConnected: boolean = true;
+  private isDbConnected: boolean = false;
 
   constructor() {
     this.statusMessage = 'Ready';
@@ -18,17 +19,34 @@ export class DatasetService {
 
   setStatusMessage(message: string) {
     this.statusMessage = message;
+    setTimeout( () => { this.statusMessage = ''}, 10000);
   }
 
   getStatusMessage(): string {
     return this.statusMessage;
   }
 
+  setDatabaseStatus(value: boolean) {
+    this.isDbConnected = value;
+  }
+
+  getDatabaseStatus() {
+    return this.isDbConnected;
+  }
+
+  /*
+      AUTHENTICATE
+   */
+
+  async authenticate(dto: AuthDto) {
+    return await (window as any).dbAPI.authenticate({ name: dto.username, data: dto.password });        
+  }
+
   /*
       USER
    */
 
-  async getUser() {
+  async getRegisteredUser() {
       return await (window as any).dbAPI.getUser();
   }
 

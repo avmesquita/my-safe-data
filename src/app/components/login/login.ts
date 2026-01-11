@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { DatasetService } from '../../services/dataset';
 import { MatButtonModule } from '@angular/material/button';
+import { AuthDto } from '../../models/auth.dto';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class Login {
 
   newUsername: string = '';
   newPassword: string = '';
+  hidePassword: boolean = true;
 
   constructor(private service: DatasetService) {}
 
@@ -30,28 +32,18 @@ export class Login {
     );
   }  
 
-  login() {
-    if (this.isFormValid()) {
-     this.service.getUser().then(
-      (data: any) => {
-        this.service.setStatusMessage('veio data');
-        if (data) {
-          this.service.setStatusMessage('data tá cheio');
-          if (data.length > 0) {
-            this.service.setStatusMessage('tem coisa no array');            
-            if (data[0].name === this.newUsername && data[0].data === this.newPassword)  {
-              this.service.setStatusMessage('user and password match');
-            }
-            this.onAuthenticate.emit(true);
-          }
-        }
-      }
-     )   
+  async login() {
+    if (!this.isFormValid()) {
+        this.service.setStatusMessage('Please fill all fields.');
+        return;
+    }      
+    const dto = new AuthDto(this.newUsername, this.newPassword);
+    const data = await this.service.authenticate(dto);
+    if (data && data.length > 0) {
+      this.service.setStatusMessage('Login Successful!');
+      this.onAuthenticate.emit(true);
+    } else {
+      this.service.setStatusMessage('Invalid Credentials.');
     }
   }
-
-  hidePassword(hide: boolean) {
-    return !hide;
-  }
-
 }

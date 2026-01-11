@@ -1,7 +1,12 @@
 {
-  "name": "safe-data",
-  "version": "0.0.0",
+  "name": "my-safe-data",
+  "version": "1.0.1",
   "main": "main.js",
+  "license": "LGPL-3.0-or-later",
+  "description": "Local Secure Storage",
+  "readme": "README.md",
+  "author": { "name": "Andre Mesquita", "email": "avmesquita@gmail.com", "url": "https://avmsistemas.net" },
+  "categories": [ "Other" ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -55,20 +60,32 @@
     "typescript": "~5.9.2"
   },
   "build": {
-    "appId": "com.safedata.app",
+    "appId": "com.mysafedata.app",
+    "name": "My Safe Data",
+    "description": "Local Secure Storage",
     "directories": {
       "output": "dist-electron" 
-    },
-    "files": [
+    }
+  },
+  "files": [
       "dist/safe-data/browser/**/*", 
       "main.js",
       "preload.js",
-      "node_modules/better-sqlite3/**/*"
-    ],
-    "win": {
-      "target": "portable",
+      "node_modules/better-sqlite3/**/*",
+      "src/favicon.ico",
+      "src/favicon.png"
+  ],
+  "win": {      
       "asarUnpack": "**/*.node",
-      "verifyUpdateCodeSignature": false
-    }
-  }
+      "verifyUpdateCodeSignature": false,
+      "icon": "favicon.ico",
+      "target": "portable"      
+  },
+  "mac": {
+      "icon": "favicon.icns"
+    },
+    "linux": {
+      "icon": "favicon.png",
+      "category": "Utility"
+  }      
 }

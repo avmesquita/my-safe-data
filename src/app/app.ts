@@ -44,14 +44,22 @@ export class App implements OnInit {
 
   async ngOnInit() {
 
-    this.service.getUser().then(
-      (data: any) => {
+    this.service.getRegisteredUser().then(
+      (data: any) => {        
         if (data) {
+          this.service.setStatusMessage(JSON.stringify(data));
           this.userExists = data.length > 0;
+          this.service.setDatabaseStatus(true);
         } else {
           this.userExists = false;
         }
       }
+    ).catch( 
+        (error: any) => {
+          console.log("error", error);
+          this.service.setStatusMessage('Database unavailable. Probably running on ng serve.');
+
+        } 
     );
 
     (window as any).dbAPI.onStatusUpdate((mensagem: string) => {      
@@ -63,7 +71,7 @@ export class App implements OnInit {
 
     (window as any).dbAPI.onDatabaseStatusUpdate((status: boolean) => {      
       this.zone.run(() => {
-        this.service.isDbConnected = status;        
+        this.service.setDatabaseStatus(status);        
       });
     });
 
@@ -74,7 +82,7 @@ export class App implements OnInit {
   }
 
   getDatabaseStatus() {
-    return this.service.isDbConnected;
+    return this.service.getDatabaseStatus();
   }
 
   async onTabChanged(event: MatTabChangeEvent) {

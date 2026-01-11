@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('dbAPI', {
 
   addUser: (dto) => ipcRenderer.invoke('add-user', dto),
   getUser: () => ipcRenderer.invoke('get-user'),
+  authenticate: (dto) => ipcRenderer.invoke('authenticate', dto),
 
   addContact: (dto) => ipcRenderer.invoke('add-contact', dto),
   listContacts: () => ipcRenderer.invoke('get-contacts'),

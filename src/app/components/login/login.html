@@ -1,38 +1,38 @@
 <div style="padding: 20px; padding-bottom: 50px;">
 
     <div class="login-container">
-    <mat-card class="login-card">
-        <mat-card-header>
-        <div mat-card-avatar class="login-header-image">
-            <mat-icon color="primary">lock</mat-icon>
-        </div>
-        <mat-card-title>Welcome</mat-card-title>
-        <mat-card-subtitle>Access your Safe Data</mat-card-subtitle>
-        </mat-card-header>
+      <mat-card class="login-card" appearance="raised">
+          <mat-card-header>
+          <div mat-card-avatar class="login-header-image">
+              <mat-icon color="primary">lock</mat-icon>
+          </div>
+          <mat-card-title>Welcome</mat-card-title>
+          <mat-card-subtitle>Access your Safe Data</mat-card-subtitle>
+          </mat-card-header>
 
-        <mat-card-content>
-        <form class="login-form">
-            <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Username</mat-label>
-            <input matInput #edtUsername [(ngModel)]="newUsername" name="username" placeholder="Type your username" required (keyup.enter)="edtPassword.focus()">
-            <mat-icon matSuffix>person</mat-icon>
-            </mat-form-field>
+          <mat-card-content>
+          <form class="login-form">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Username</mat-label>
+                <input matInput #edtUsername [(ngModel)]="newUsername" name="username" placeholder="Type your username" required (keyup.enter)="edtPassword.focus()">
+                <mat-icon matSuffix>person</mat-icon>
+              </mat-form-field>
 
-            <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Password</mat-label>
-            <input matInput #edtPassword [type]="newPassword ? 'password' : 'text'" [(ngModel)]="newPassword" name="password" required (keyup.enter)="btnLogin.focus()">
-            <button mat-icon-button matSuffix (click)="hidePassword(!newPassword)" [attr.aria-label]="'Hide password'">
-                <mat-icon>{{newPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-            </mat-form-field>
-        </form>
-        </mat-card-content>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Password</mat-label>
+                <input matInput #edtPassword [type]="hidePassword ? 'password' : 'text'" [(ngModel)]="newPassword" name="password" required (keyup.enter)="btnLogin.focus()">
+                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
+                  <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+          </form>
+          </mat-card-content>
 
-        <mat-card-actions align="end">    
-        <button #btnLogin mat-raised-button color="primary" (click)="login()" [disabled]="!newUsername || !newUsername">
-            Login
-        </button>
-        </mat-card-actions>
-    </mat-card>
+          <mat-card-actions align="end">    
+          <button #btnLogin mat-raised-button color="primary" (click)="login()" [disabled]="!newUsername || !newUsername">
+              Login
+          </button>
+          </mat-card-actions>
+      </mat-card>
     </div>
 </div>
