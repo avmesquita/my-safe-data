@@ -1,5 +1,7 @@
 # My Safe Data
 
+<img src="src/favicon.png">
+
 Desktop application built with Angular, Electron e SQLite.
 
 
