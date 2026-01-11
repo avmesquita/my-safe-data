@@ -1,8 +1,19 @@
 const { app, BrowserWindow, Menu, ipcMain } = require('electron');
 const path = require('path');
 const Database = require('better-sqlite3');
+const bcrypt = require('bcryptjs');
+const { autoUpdater } = require('electron-updater');
 
 let win;
+
+const isDebugging = false;
+const saltRounds = 10;
+
+if (isDebugging) {
+    // Log updates to a file for debugging
+    autoUpdater.logger = require("electron-log");
+    autoUpdater.logger.transports.file.level = "info";
+}
 
 function sendStatus(message) {  
   if (win && win.webContents) {
@@ -42,10 +53,24 @@ function createWindow() {
 
     ipcMain.handle('authenticate', (event, dto) => {
         try {
-            const data = db.prepare("SELECT * FROM users where name = ? and data = ?").all(dto.name, dto.data);
-            sendStatus('Authenticated.');
-            sendDatabaseStatus(true);
-            return data;
+            //const data = db.prepare("SELECT * FROM users where name = ? and data = ?").all(dto.name, dto.data);
+            const user = db.prepare("SELECT * FROM users WHERE name = ?").get(dto.name);
+            if (!user) {
+                sendStatus('User not found!');
+                return [];
+            }
+
+            const isMatch = bcrypt.compareSync(dto.data, user.data);
+
+            if (isMatch) {
+                sendStatus('Authenticated.');
+                sendDatabaseStatus(true);
+                delete(user.data);
+                return user; 
+            } else {
+                sendStatus('Password mismatch.');                
+                return [];
+            }
         } catch (error) {
             sendDatabaseStatus(false);
             sendStatus('Ops: ' + error.message);
@@ -58,7 +83,8 @@ function createWindow() {
 
     ipcMain.handle('add-user', (event, dto) => {
         try {
-            const info = db.prepare('INSERT INTO users (name, data) VALUES (?, ?)').run(dto.name, dto.data);
+            const hashedPassword = bcrypt.hashSync(dto.data, saltRounds);
+            const info = db.prepare('INSERT INTO users (name, data) VALUES (?, ?)').run(dto.name, hashedPassword);
             sendStatus('User saved');
             sendDatabaseStatus(true);
             return info.lastInsertRowid;        
@@ -243,9 +269,6 @@ function createWindow() {
         }
     });
 
-    const iconPath = path.join(__dirname, 'favicon.ico');
-    console.log("Procurando icone em:", iconPath);
-
     win = new BrowserWindow({
         width: 800,
         height: 600,
@@ -257,14 +280,39 @@ function createWindow() {
         }
     });
 
+    // 1. Check for updates after the window is shown
+    win.once('ready-to-show', () => {
+        if (app.isPackaged && !isDebugging) {
+            autoUpdater.checkForUpdatesAndNotify();
+        } else {
+            console.log("Dev mode: auto-update skipped.");
+        }
+    });
+
+    // 2. Notify the Angular frontend about the update progress
+    autoUpdater.on('update-available', () => {
+        win.webContents.send('update_available');
+    });
+
+    autoUpdater.on('update-downloaded', () => {
+        win.webContents.send('update_downloaded');
+    });    
+
     if (process.platform === 'linux') {
         win.setIcon(path.join(__dirname, 'src/favicon.png'));
-    }    
+    }
+
+    ipcMain.on('restart_app', () => {
+        autoUpdater.quitAndInstall();
+    });
 
     /*
     TO DEBUG
     */
-    //win.webContents.openDevTools();
+
+    if (isDebugging) {
+        win.webContents.openDevTools();
+    }
     
     win.loadFile(path.join(__dirname, `dist/safe-data/browser/index.html`));
 

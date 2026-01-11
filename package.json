@@ -1,7 +1,7 @@
 {
   "name": "my-safe-data",
   "productName": "My Safe Data",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": "main.js",
   "license": "LGPL-3.0-or-later",
   "description": "Local Secure Storage",

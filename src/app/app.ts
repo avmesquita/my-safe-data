@@ -62,7 +62,6 @@ export class App implements OnInit {
         (error: any) => {
           console.log("error", error);
           this.service.setStatusMessage('Database unavailable. Probably running on ng serve.');
-
         } 
     );
 
