@@ -3,8 +3,7 @@ name: Build and Release
 on:
   push:
     tags:
-      - 'v*' # Executa quando você criar uma tag como v1.0.1
-
+      - 'v*' # Executa quando você criar uma tag como v1.0.3
 jobs:
   release:
     runs-on: windows-latest # Build para Windows precisa rodar em Windows
@@ -22,7 +21,7 @@ jobs:
         run: npm install
 
       - name: Build Angular
-        run: npm run build -- --prod --base-href ./
+        run: npm run build
 
       - name: Build and Publish Electron
         env:
