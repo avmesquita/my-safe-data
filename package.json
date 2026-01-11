@@ -1,7 +1,7 @@
 {
   "name": "my-safe-data",
   "productName": "My Safe Data",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "main.js",
   "license": "LGPL-3.0-or-later",
   "description": "Local Secure Storage",
@@ -17,9 +17,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "build": "ng build --base-href ./",
+    "watch": "ng build --base-href ./ --watch --configuration development",
+    "test": "ng test",    
     "electron": "ng build --base-href ./ && electron .",
     "build-exe": "ng build --base-href ./ && electron-builder",
     "postinstall": "electron-builder install-app-deps"
