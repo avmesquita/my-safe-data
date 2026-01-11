@@ -3,6 +3,10 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('dbAPI', {
   onStatusUpdate: (callback) => ipcRenderer.on('status-message', (event, value) => callback(value)),
   onDatabaseStatusUpdate: (callback) => ipcRenderer.on('database-status-message', (event, value) => callback(value)),
+  onUpdateAvailable: (callback) => ipcRenderer.on('update_available', () => callback()),
+  onUpdateDownloaded: (callback) => ipcRenderer.on('update_downloaded', () => callback()),
+  
+  restartApp: () => ipcRenderer.send('restart_app'),  
 
   addUser: (dto) => ipcRenderer.invoke('add-user', dto),
   getUser: () => ipcRenderer.invoke('get-user'),
@@ -22,6 +26,5 @@ contextBridge.exposeInMainWorld('dbAPI', {
 
   addPassword: (dto) => ipcRenderer.invoke('add-password', dto),
   listPasswords: () => ipcRenderer.invoke('get-passwords'),
-  deletePassword: (id) => ipcRenderer.invoke('delete-password', id),
-
+  deletePassword: (id) => ipcRenderer.invoke('delete-password', id)
 });
