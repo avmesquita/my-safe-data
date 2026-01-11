@@ -39,7 +39,8 @@ export class Login {
     }      
     const dto = new AuthDto(this.newUsername, this.newPassword);
     const data = await this.service.authenticate(dto);
-    if (data && data.length > 0) {
+    debugger;
+    if (data && data.id > 0 && data.name.length > 0 && data.instant) {
       this.service.setStatusMessage('Login Successful!');
       this.onAuthenticate.emit(true);
     } else {

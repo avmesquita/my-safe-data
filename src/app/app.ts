@@ -14,6 +14,7 @@ import { Passwords } from "./components/passwords/passwords";
 import { Dashboard } from "./components/dashboard/dashboard";
 import { Login } from "./components/login/login";
 import { Register } from "./components/register/register";
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +24,8 @@ import { Register } from "./components/register/register";
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
-    FormsModule,
+    MatSnackBarModule,
+    FormsModule,    
     ReactiveFormsModule,
     Contacts,
     Links,
@@ -40,7 +42,9 @@ export class App implements OnInit {
   userExists: boolean = false;
   userConnected: boolean = false;
 
-  constructor(private zone: NgZone, private service: DatasetService) {}
+  constructor(private zone: NgZone, private service: DatasetService, private snackBar: MatSnackBar) {
+    this.initUpdateListeners();
+  }
 
   async ngOnInit() {
 
@@ -101,5 +105,21 @@ export class App implements OnInit {
     this.userExists = value;
   }
 
+  initUpdateListeners() {
+    const dbAPI = (window as any).dbAPI;
+
+    if (dbAPI) {
+      dbAPI.onUpdateAvailable(() => {
+        this.snackBar.open('A new update is available. Downloading...', 'Close', { duration: 5000 });
+      });
+
+      dbAPI.onUpdateDownloaded(() => {
+        const snack = this.snackBar.open('Update downloaded. Restart to apply?', 'RESTART');
+        snack.onAction().subscribe(() => {
+          dbAPI.restartApp();
+        });
+      });
+    }
+  }
 
 }
