@@ -28,9 +28,9 @@ To build a distributable binary.
 npm run build-exe
 ```
 
-## Release
+## Download
 
-To final user, go to <a href="https://github.com/avmesquita/my-safe-data/releases">Releases Page</a>, download distribute version or installer and enjoy it!
+Go to <a href="https://github.com/avmesquita/my-safe-data/releases">Releases Page</a>, download portable executable version or installer and enjoy it!
 
 ## Screenshots
 
