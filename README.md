@@ -4,6 +4,13 @@
 
 Desktop application built with Angular, Electron e SQLite.
 
+## Install dependencies
+
+To install project dependencies first, run:
+
+```bash
+npm install
+```
 
 ## Development (console execute)
 
@@ -20,6 +27,10 @@ To build a distributable binary.
 ```bash
 npm run build-exe
 ```
+
+## Release
+
+To final user, go to <a href="https://github.com/avmesquita/my-safe-data/releases">Releases Page</a>, download distribute version or installer and enjoy it!
 
 ## Screenshots
 
@@ -54,9 +65,3 @@ npm run build-exe
 ### About
 
 <img width="1183" height="890" alt="image" src="https://github.com/user-attachments/assets/d4e890a1-f741-4d85-9d3b-1c9757f74e07" />
-
-
-
-
-
-
